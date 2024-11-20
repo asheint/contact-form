@@ -1,5 +1,6 @@
 "use client"
 
+import { formSchema } from "@/lib/schemas"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -15,13 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
- 
-const formSchema = z.object({
-  firstName: z.string().min(2).max(50),
-  lastName: z.string().min(2).max(50),
-  email: z.string().email(),
-  message: z.string().min(10),
-})
+import { send } from "@/lib/email"
 
 export default function ContactForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -33,10 +28,9 @@ export default function ContactForm() {
       message: "",
     },
   })
- 
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    
-    console.log(values)
+    send(values);
   }
 
   return (
